@@ -84,22 +84,22 @@ Shader "Unlit/OceanWater" {
                     displace.z += amplitude * (dir.y / k) * cosP;
 
                     tangentX += float3(
-                        amplitude * (dir.x / k) * -sinP * dir.x * k,
+                        -amplitude * sinP * dir.x * dir.x,
                         amplitude * dir.x * cosP * k,
-                        amplitude * (dir.x / k) * -sinP * dir.y * k
+                        -amplitude * sinP * dir.y * dir.x
                     );
 
                     tangentZ += float3(
-                        -amplitude * (dir.x / k) * sinP * dir.y * k,
+                        -amplitude * sinP * dir.x * dir.y,
                         amplitude * dir.y * cosP * k,
-                        -amplitude * (dir.y / k) * sinP * dir.y * k
+                        -amplitude * sinP * dir.y * dir.y
                     );
                 }
 
                 float4 newPos = v.pos + displace;
                 o.pos = UnityObjectToClipPos(newPos);
                 o.worldPos = mul(unity_ObjectToWorld, newPos);
-                o.normal = normalize(cross(tangentX, tangentZ));
+                o.normal = cross(tangentX, tangentZ);
                 return o;
             }
 
